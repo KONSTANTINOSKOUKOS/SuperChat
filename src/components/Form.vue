@@ -113,7 +113,7 @@ input {
 
 .bottom {
     position: fixed;
-    bottom: 7vh;
+    bottom: 13vh;
     font-size: 1.5rem;
     margin: 0 85vw;
     padding: .3rem .8rem;

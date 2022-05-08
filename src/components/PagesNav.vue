@@ -1,12 +1,16 @@
 <template>
     <div v-if="state.user" class="cont">
-        <router-link class="link" to="/home">HOME</router-link>
+        <router-link class="link" to="/home">
+            HOME
+        </router-link>
         <router-link class="link" :to="`/chat`">CHAT</router-link>
-        <router-link class="link" to="/user">USER</router-link>
+        <router-link class="link" to="/user">
+            USER</router-link>
     </div>
 </template>
 <script setup lang="ts">
 import { state } from "../store";
+
 </script>
 
 <style scoped>
@@ -18,19 +22,21 @@ import { state } from "../store";
     display: flex;
     justify-content: space-around;
     align-items: center;
+    max-height: 5.8vh;
 }
 
 .link {
-    background-color: #707a82;
+    background-color: #828f98;
     color: black;
     border: 0;
     border-radius: .3rem;
-    margin: .7em 0;
-    padding: .2em .45em;
+    margin: .6em 0;
+    /* padding: .1rem .45rem; */
     text-decoration: none;
 }
 
-.link:hover {
+.link:hover,
+.link:focus {
     filter: brightness(90%);
 }
 </style>
