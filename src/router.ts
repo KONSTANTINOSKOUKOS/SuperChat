@@ -1,0 +1,42 @@
+import { createRouter, createWebHistory } from "vue-router";
+import { state } from './store'
+
+const routes = [
+    {
+        path: '/auth',
+        name: 'Auth',
+        component: () => import('./components/Auth.vue')
+    },
+    {
+        path: '/home',
+        name: 'Home',
+        component: () => import('./components/Home.vue')
+    },
+    {
+        path: '/chat',
+        name: 'Chat',
+        component: () => import('./components/Chat.vue')
+    },
+    // {
+    //     path: '/user',
+    //     name: 'User',
+    //     component: ()=> import('./components/User.vue')
+    // },
+];
+
+export const router = createRouter({
+    history: createWebHistory(),
+    routes: routes
+});
+
+router.beforeResolve(async (to, from) => {
+   if (to.path == '/') {
+       if (state.user)
+           return router.push({ name: 'Home' });
+       else
+           return router.push({ name: 'Auth' });
+   }
+   if (to.name != 'Auth' && !state.user) {
+       return router.push({ name: 'Auth' });
+   }
+});

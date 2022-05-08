@@ -28,10 +28,8 @@ onMounted(async () => {
         e.forEach(entry => {
             if (entry.isIntersecting) {
                 bottom.value = true;
-                console.log(bottom.value);
             } else {
                 bottom.value = false;
-                console.log(bottom.value);
             }
         });
     }, {
@@ -58,7 +56,7 @@ const sendd = async () => {
     width: 100%;
     /* height: 4vh; */
     display: flex;
-    margin-bottom: 1vh;
+    margin-bottom: 7vh;
     justify-content: center;
     align-items: center;
     flex-direction: column;

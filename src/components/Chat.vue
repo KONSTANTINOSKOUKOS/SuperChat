@@ -1,6 +1,6 @@
 <template>
   <div class="superchat">
-    <Nav />
+    <!-- <Nav /> -->
     <Message v-for="msg in state.msgs" :msg="msg" :key="msg.id" />
     <Form />
     <div ref="dum" style="margin-top: 5rem;height: 1px;"></div>
@@ -10,7 +10,7 @@
 <script lang="ts" setup>
 import { inject, provide, ref } from "vue";
 import { istate } from "../store";
-import Nav from "./Nav.vue";
+// import Nav from "./Nav.vue";
 import Message from "./Message.vue";
 import Form from "./Form.vue";
 

@@ -6,11 +6,12 @@
   <button @click="loginwgoogle()"> Log In With Google</button>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { onMounted } from "vue";
-import { persistuser, loginwgoogle } from "../firebase";
+import { persistuser, loginwgoogle, logout } from "../firebase";
 
 onMounted(() => {
+  logout();
   persistuser();
 });
 

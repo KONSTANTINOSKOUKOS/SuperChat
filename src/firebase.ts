@@ -2,9 +2,9 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
-import state from './store';
+import { state } from './store';
 import { istate } from './store';
-import { Ref } from 'vue';
+import { onUnmounted, Ref } from 'vue';
 
 import { collection, doc, setDoc, updateDoc, onSnapshot, query, orderBy } from "firebase/firestore";
 import {
@@ -15,6 +15,7 @@ import {
     browserSessionPersistence,
     onAuthStateChanged
 } from "firebase/auth";
+import { router } from "./router";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBQIzMt7WX15ElNiUUXDKjSAmM5g-qQl-k",
@@ -40,6 +41,9 @@ export function getmsgs() {
             state.msgs.push(doc.data());
         });
     });
+    onUnmounted(() => {
+        unsub();
+    })
 };
 
 export async function send(txt: Ref<string>) {
@@ -92,12 +96,16 @@ export async function loginwgoogle() {
     await signInWithPopup(auth, provider).then((res) => {
         state.user = res.user;
         console.log(state.user);
+        state.loggedin = true;
+        router.push({ name: 'Home' });
     });
 };
 
 export function logout() {
     signOut(auth).then(() => {
         state.user = null;
+        state.loggedin = false;
+        router.push({ name: 'Auth' });
     });
 };
 

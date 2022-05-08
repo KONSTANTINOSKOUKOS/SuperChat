@@ -9,7 +9,8 @@
   },
   "dependencies": {
     "firebase": "^9.6.10",
-    "vue": "^3.2.31"
+    "vue": "^3.2.31",
+    "vue-router": "^4.0.15"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.0",

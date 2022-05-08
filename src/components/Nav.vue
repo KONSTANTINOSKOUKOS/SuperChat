@@ -1,14 +1,13 @@
 <template>
-    <nav>
+    <nav v-if="state.user">
         <button @click="logout()">Log out</button>
         <img :src="state.user.photoURL">
     </nav>
 </template>
 
 <script lang="ts" setup>
-import state from '../store';
+import { state } from '../store';
 import { logout } from "../firebase";
-
 </script>
 
 <style scoped>

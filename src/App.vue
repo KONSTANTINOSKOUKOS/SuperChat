@@ -1,19 +1,23 @@
 <template>
-  <Auth v-if="!state.user" />
-
-  <Chat v-else />
+  <Nav />
+  <router-view></router-view>
+  <PagesNav />
 </template>
 <script setup lang="ts">
-import state from "./store";
-import { provide } from "vue";
-import { db, auth } from "./firebase";
+import { state } from "./store";
+import { onMounted, provide } from "vue";
+import { db, auth, persistuser } from "./firebase";
 
-import Auth from "./components/Auth.vue";
+import Nav from "./components/Nav.vue";
+import PagesNav from "./components/PagesNav.vue";
 
-import Chat from "./components/Chat.vue";
 provide("db", db);
 provide("state", state);
 provide("auth", auth);
+
+onMounted(() => {
+  // persistuser();
+})
 </script>
 
 <style>
