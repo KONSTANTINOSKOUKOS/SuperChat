@@ -1,13 +1,12 @@
 <template>
     <nav v-if="state.user">
-        <button @click="logout()">Log out</button>
+        <router-link class="log" to="/auth">Log out</router-link>
         <img :src="state.user.photoURL">
     </nav>
 </template>
 
 <script lang="ts" setup>
 import { state } from '../store';
-import { logout } from "../firebase";
 </script>
 
 <style scoped>
@@ -30,7 +29,7 @@ nav img {
     border-radius: 50%;
 }
 
-nav button {
+.log {
     margin: auto 0;
     font-size: 1.1em;
     background-color: aqua;
@@ -38,9 +37,11 @@ nav button {
     border: .15em solid black;
     padding: .3rem;
     border-radius: 10rem;
+    text-decoration: none;
+    color: black;
 }
 
-nav button:hover {
+.log:hover {
     filter: brightness(90%);
 }
 </style>

@@ -6,7 +6,7 @@ import { state } from './store';
 import { istate } from './store';
 import { onUnmounted, Ref } from 'vue';
 
-import { collection, doc, setDoc, updateDoc, onSnapshot, query, orderBy } from "firebase/firestore";
+import { collection, doc, setDoc, getDocs, updateDoc, onSnapshot, query, orderBy } from "firebase/firestore";
 import {
     GoogleAuthProvider,
     signInWithPopup,
@@ -96,9 +96,24 @@ export async function loginwgoogle() {
     await signInWithPopup(auth, provider).then((res) => {
         state.user = res.user;
         console.log(state.user);
-        state.loggedin = true;
-        router.push({ name: 'Home' });
     });
+    
+    let userexists = false;
+    const docs = (await getDocs(collection(db, 'users'))).docs;
+    for (const doc of docs) {
+        if (doc.id == state.user.uid) {
+            userexists = true;
+            break;
+        }
+    }
+    if (!userexists) {
+        await setDoc(doc(db, 'users', state.user.uid), {
+            name: state.user.displayName,
+            photoURL: state.user.photoURL,
+            uid: state.user.uid
+        });
+    }
+    router.push({ name: 'Home' });
 };
 
 export function logout() {
@@ -108,6 +123,7 @@ export function logout() {
         router.push({ name: 'Auth' });
     });
 };
+
 
 // export async function addcontact() {
 //     //const chats = collection(db, 'chats');

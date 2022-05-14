@@ -1,7 +1,9 @@
 <template>
     <div v-if="state.user" class="cont">
         <router-link class="link" to="/home">
-            HOME
+            <svg width="30" height="30" viewBox="0 0 24 24">
+                <path d="M3 10v11h6v-7h6v7h6v-11L12,3z" />
+            </svg>
         </router-link>
         <router-link class="link" :to="`/chat`">CHAT</router-link>
         <router-link class="link" to="/user">
@@ -33,6 +35,7 @@ import { state } from "../store";
     margin: .6em 0;
     /* padding: .1rem .45rem; */
     text-decoration: none;
+    text-align: center;
 }
 
 .link:hover,
