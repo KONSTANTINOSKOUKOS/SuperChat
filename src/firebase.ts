@@ -3,10 +3,10 @@ import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 import { state } from './store';
-import { istate } from './store';
+import { istate, IMsg } from './store';
 import { onUnmounted, Ref } from 'vue';
 
-import { collection, doc, setDoc, getDocs, updateDoc, onSnapshot, query, orderBy } from "firebase/firestore";
+import { collection, doc, setDoc, getDocs, getDoc, updateDoc, onSnapshot, query, orderBy } from "firebase/firestore";
 import {
     GoogleAuthProvider,
     signInWithPopup,
@@ -35,7 +35,7 @@ export function getmsgs() {
     state.msgs = [];
     const coll = collection(db, 'messages');
     const q = query(coll, orderBy('date', 'asc'));
-    const unsub = onSnapshot(q, (docs) => {
+    const unsub = onSnapshot(q, docs => {
         state.msgs = [];
         docs.forEach(doc => {
             state.msgs.push(doc.data());
@@ -48,7 +48,7 @@ export function getmsgs() {
 
 export async function send(txt: Ref<string>) {
     const date = Date.now();
-    const message: istate['msgtype'] = {
+    const message: IMsg = {
         id: Math.random(),
         liked: [],
         sender: state.user.uid,
@@ -77,7 +77,7 @@ export async function like(docc: any, ownliked: Ref<boolean>, arrlike: Ref<strin
 };
 
 export function getlikes(docc: any, ownliked: Ref<boolean>, arrlike: Ref<string[]>) {
-    const unsub = onSnapshot(docc, (doc) => {
+    const unsub = onSnapshot(docc, doc => {
         arrlike.value = doc.data().liked;
         ownliked.value = arrlike.value.indexOf(state.user.uid) != -1;
     });
@@ -86,18 +86,17 @@ export function getlikes(docc: any, ownliked: Ref<boolean>, arrlike: Ref<string[
 export function persistuser() {
     setPersistence(auth, browserSessionPersistence);
 
-    const unsub = onAuthStateChanged(auth, (user) => {
+    const unsub = onAuthStateChanged(auth, user => {
         state.user = user ? user : null;
     });
 };
 
 export async function loginwgoogle() {
     const provider = new GoogleAuthProvider();
-    await signInWithPopup(auth, provider).then((res) => {
-        state.user = res.user;
-        console.log(state.user);
-    });
-    
+    const signin = await signInWithPopup(auth, provider);
+    state.user = signin.user;
+    console.log(state.user);
+
     let userexists = false;
     const docs = (await getDocs(collection(db, 'users'))).docs;
     for (const doc of docs) {
@@ -124,7 +123,21 @@ export function logout() {
     });
 };
 
+export async function getuser(uid: string) {
+    const docc = await getDoc(doc(db, 'users', uid));
+    return docc.data();
+}
 
+export async function getcontacts(uid: string) {
+    const contacts = [];
+    const docs = await getDocs(collection(db, 'contacts'));
+    docs.docs.forEach(doc => {
+        if (doc.data().users.indexOf(uid) != -1) {
+            contacts.push(doc.id);
+        }
+    });
+    return contacts;
+}
 // export async function addcontact() {
 //     //const chats = collection(db, 'chats');
 //     const contact = {

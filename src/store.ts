@@ -1,5 +1,5 @@
 import { reactive } from 'vue';
-import { User } from "firebase/auth";
+// import { User } from "firebase/auth";
 
 export const state = reactive({
     msgs: [],
@@ -11,7 +11,7 @@ export const state = reactive({
 export interface istate {
     msgtype?: { id: number, liked: string[], sender: string, txt: string, date: number, img: string, name: string },
     msgs: { id: number, liked: string[], sender: string, txt: string, date: number, img: string, name: string }[],
-    user: User,
+    user: IUser,
     currentchatid: string
 }
 
@@ -27,7 +27,7 @@ export interface IMsg {
     name: string
 };
 
-export interface Iuser {
+export interface IUser {
     displayName: string,
     photoUrl: string,
     uid: string

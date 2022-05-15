@@ -7,7 +7,9 @@
 </template>
 
 <script setup lang="ts">
-import {  } from "../firebase";
+import { getcontacts } from "../firebase";
+import { state } from "../store";
+const contacts = getcontacts(state.user)
 </script>
 
 <style scoped>
