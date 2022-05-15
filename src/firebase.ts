@@ -2,7 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
-import { state } from './store';
+import { IContact, state } from './store';
 import { istate, IMsg } from './store';
 import { onUnmounted, Ref } from 'vue';
 
@@ -87,7 +87,8 @@ export function persistuser() {
     setPersistence(auth, browserSessionPersistence);
 
     const unsub = onAuthStateChanged(auth, user => {
-        state.user = user ? user : null;
+        state.user = user;
+        //  ? user : null;
     });
 };
 
@@ -97,6 +98,7 @@ export async function loginwgoogle() {
     state.user = signin.user;
     console.log(state.user);
 
+    //make user doc, avoid duplicating
     let userexists = false;
     const docs = (await getDocs(collection(db, 'users'))).docs;
     for (const doc of docs) {
@@ -118,7 +120,6 @@ export async function loginwgoogle() {
 export function logout() {
     signOut(auth).then(() => {
         state.user = null;
-        state.loggedin = false;
         router.push({ name: 'Auth' });
     });
 };
@@ -129,12 +130,21 @@ export async function getuser(uid: string) {
 }
 
 export async function getcontacts(uid: string) {
-    const contacts = [];
-    const docs = await getDocs(collection(db, 'contacts'));
-    docs.docs.forEach(doc => {
-        if (doc.data().users.indexOf(uid) != -1) {
-            contacts.push(doc.id);
-        }
+    const contacts: IContact[] = [];
+
+    // const docs = await getDocs(collection(db, 'contacts'));
+    // docs.docs.forEach(doc => {
+    //     if (doc.data().users.indexOf(uid) != -1) {
+    //         contacts.push(doc.data());
+    //     }
+    // });
+
+    getDocs(collection(db, 'contacts')).then(docs => {
+        docs.docs.forEach(doc => {
+            if (doc.data().users.indexOf(uid) != -1) {
+                contacts.push(doc.data());
+            }
+        });
     });
     return contacts;
 }
@@ -145,3 +155,14 @@ export async function getcontacts(uid: string) {
 //     }
 //     await setDoc(doc(db,'contacts'),contact);
 // }
+
+export async function spch() {
+    const allusers = (await getDocs(collection(db, 'users'))).docs;
+    console.log(allusers);
+    return allusers;
+}
+    // const chat: IContact = {
+    //     users: 1,
+    //     msgs:[]
+    // };
+    // setDoc(doc(db,'contacts','superchat'),chat);

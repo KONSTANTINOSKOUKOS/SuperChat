@@ -1,20 +1,21 @@
 import { reactive } from 'vue';
-// import { User } from "firebase/auth";
 
 export const state = reactive({
     msgs: [],
     user: null,
-    loggedin: false,
     currentchatid: ''
 });
 
 export interface istate {
     msgtype?: { id: number, liked: string[], sender: string, txt: string, date: number, img: string, name: string },
     msgs: { id: number, liked: string[], sender: string, txt: string, date: number, img: string, name: string }[],
-    user: IUser,
+    user: {
+        displayName: string,
+        photoUrl: string,
+        uid: string
+    },
     currentchatid: string
 }
-
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 export interface IMsg {
@@ -33,7 +34,7 @@ export interface IUser {
     uid: string
 };
 
-export interface IChat{
+export interface IContact {
     users: string[],
     msgs: IMsg[]
 }

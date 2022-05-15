@@ -8,13 +8,13 @@
 
 <script lang="ts" setup>
 import { onMounted } from "vue";
-import { persistuser, loginwgoogle, logout } from "../firebase";
+import { persistuser, loginwgoogle, logout, spch } from "../firebase";
 
 onMounted(() => {
   logout();
   persistuser();
+  const docs = spch();
 });
-
 </script>
 
 <style scoped>
