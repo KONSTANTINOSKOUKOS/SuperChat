@@ -3,17 +3,13 @@ import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 import { IContact, state } from './store';
-import { istate, IMsg } from './store';
+import { IMsg } from './store';
 import { onUnmounted, Ref } from 'vue';
 
 import { collection, doc, setDoc, getDocs, getDoc, updateDoc, onSnapshot, query, orderBy } from "firebase/firestore";
 import {
     GoogleAuthProvider,
     signInWithPopup,
-    signOut,
-    setPersistence,
-    browserSessionPersistence,
-    onAuthStateChanged
 } from "firebase/auth";
 import { router } from "./router";
 
@@ -84,18 +80,20 @@ export function getlikes(docc: any, ownliked: Ref<boolean>, arrlike: Ref<string[
 };
 
 export function persistuser() {
-    setPersistence(auth, browserSessionPersistence);
+    // setPersistence(auth, browserSessionPersistence);
 
-    const unsub = onAuthStateChanged(auth, user => {
-        state.user = user;
-        //  ? user : null;
-    });
+    // const unsub = onAuthStateChanged(auth, user => {
+    //     state.user = user;
+    //     //  ? user : null;
+    // });
+    state.user = JSON.parse(localStorage.getItem('user'));
 };
 
 export async function loginwgoogle() {
     const provider = new GoogleAuthProvider();
     const signin = await signInWithPopup(auth, provider);
     state.user = signin.user;
+    localStorage.setItem('user', JSON.stringify(state.user));
     console.log(state.user);
 
     //make user doc, avoid duplicating
@@ -118,10 +116,14 @@ export async function loginwgoogle() {
 };
 
 export function logout() {
-    signOut(auth).then(() => {
-        state.user = null;
-        router.push({ name: 'Auth' });
-    });
+    // signOut(auth).then(() => {
+    //     state.user = null;
+    //     localStorage.clear();
+    //     router.push({ name: 'Auth' });
+    // });
+    localStorage.clear();
+    state.user = null;
+    router.push({ name: 'Auth' });
 };
 
 export async function getuser(uid: string) {

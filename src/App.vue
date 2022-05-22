@@ -1,7 +1,11 @@
 <template>
-  <Nav />
-  <router-view></router-view>
-  <PagesNav />
+  <Auth v-if="!state.user" />
+
+  <div v-else>
+    <Nav />
+    <router-view></router-view>
+    <PagesNav />
+  </div>
 </template>
 <script setup lang="ts">
 import { state } from "./store";
@@ -10,13 +14,14 @@ import { db, auth, persistuser } from "./firebase";
 
 import Nav from "./components/Nav.vue";
 import PagesNav from "./components/PagesNav.vue";
+import Auth from "./components/Auth.vue";
 
 provide("db", db);
 provide("state", state);
 provide("auth", auth);
 
 onMounted(() => {
-  // persistuser();
+  persistuser();
 })
 </script>
 

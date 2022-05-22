@@ -1,11 +1,12 @@
 <template>
     <nav v-if="state.user">
-        <router-link class="log" to="/auth">Log out</router-link>
+        <router-link @click="logout()" class="log" to="/auth">Log out</router-link>
         <img :src="state.user.photoURL">
     </nav>
 </template>
 
 <script lang="ts" setup>
+import { logout } from '../firebase';
 import { state } from '../store';
 </script>
 

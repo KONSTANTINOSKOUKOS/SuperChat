@@ -30,7 +30,7 @@ export const router = createRouter({
     routes: routes
 });
 
-router.beforeEach(async (to, from) => {
+router.afterEach(async (to, from) => {
     persistuser();
     if (to.name != 'Auth' && !state.user) {
         return router.push({ name: 'Auth' });
@@ -40,5 +40,9 @@ router.beforeEach(async (to, from) => {
             return router.push({ name: 'Home' });
         else
             return router.push({ name: 'Auth' });
+    }
+    if (to.name == 'Auth') {
+        localStorage.clear();
+        state.user = null;
     }
 });
