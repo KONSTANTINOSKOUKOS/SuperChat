@@ -6,7 +6,7 @@ import { IContact, state } from './store';
 import { IMsg } from './store';
 import { onUnmounted, Ref } from 'vue';
 
-import { collection, doc, setDoc, getDocs, getDoc, updateDoc, onSnapshot, query, orderBy } from "firebase/firestore";
+import { collection, doc, setDoc, getDocs, getDoc, updateDoc, onSnapshot, query, orderBy, arrayUnion } from "firebase/firestore";
 import {
     GoogleAuthProvider,
     signInWithPopup,
@@ -80,12 +80,6 @@ export function getlikes(docc: any, ownliked: Ref<boolean>, arrlike: Ref<string[
 };
 
 export function persistuser() {
-    // setPersistence(auth, browserSessionPersistence);
-
-    // const unsub = onAuthStateChanged(auth, user => {
-    //     state.user = user;
-    //     //  ? user : null;
-    // });
     state.user = JSON.parse(localStorage.getItem('user'));
 };
 
@@ -96,7 +90,7 @@ export async function loginwgoogle() {
     localStorage.setItem('user', JSON.stringify(state.user));
     console.log(state.user);
 
-    //make user doc, avoid duplicating
+    //if user doesn't exist in users collection
     let userexists = false;
     const docs = (await getDocs(collection(db, 'users'))).docs;
     for (const doc of docs) {
@@ -105,11 +99,16 @@ export async function loginwgoogle() {
             break;
         }
     }
+    //make doc w/his info & update users array in superchat doc
     if (!userexists) {
         await setDoc(doc(db, 'users', state.user.uid), {
             name: state.user.displayName,
             photoURL: state.user.photoURL,
             uid: state.user.uid
+        });
+
+        await updateDoc(doc(db, 'contacts', 'superchat'), {
+            'users': arrayUnion(state.user.uid)
         });
     }
     router.push({ name: 'Home' });
