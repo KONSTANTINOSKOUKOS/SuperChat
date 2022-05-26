@@ -115,11 +115,6 @@ export async function loginwgoogle() {
 };
 
 export function logout() {
-    // signOut(auth).then(() => {
-    //     state.user = null;
-    //     localStorage.clear();
-    //     router.push({ name: 'Auth' });
-    // });
     localStorage.clear();
     state.user = null;
     router.push({ name: 'Auth' });
