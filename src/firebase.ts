@@ -2,7 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
-import { IContact, state } from './store';
+import { IContact, IUser, state } from './store';
 import { IMsg } from './store';
 import { onUnmounted, Ref } from 'vue';
 
@@ -120,30 +120,29 @@ export function logout() {
     router.push({ name: 'Auth' });
 };
 
-export async function getuser(uid: string) {
-    const docc = await getDoc(doc(db, 'users', uid));
-    return docc.data();
+export function getuser(uid: string): IUser {
+    let user = {};
+    getDoc(doc(db, 'users', uid)).then(doc => {
+        user = doc.data();
+        console.log(user);
+        
+    });
+    return user;
 }
 
-export async function getcontacts(uid: string) {
-    const contacts: IContact[] = [];
+export function getcontacts(uid: string, contacts: IContact[], loading: Ref<boolean>) {
 
-    // const docs = await getDocs(collection(db, 'contacts'));
-    // docs.docs.forEach(doc => {
-    //     if (doc.data().users.indexOf(uid) != -1) {
-    //         contacts.push(doc.data());
-    //     }
-    // });
-
-    getDocs(collection(db, 'contacts')).then(docs => {
-        docs.docs.forEach(doc => {
+    loading.value = true;
+    getDocs(collection(db, 'contacts')).then(docss => {
+        docss.docs.forEach(doc => {
             if (doc.data().users.indexOf(uid) != -1) {
                 contacts.push(doc.data());
             }
-        });
+        })
+        loading.value = false;
     });
-    return contacts;
 }
+
 // export async function addcontact() {
 //     //const chats = collection(db, 'chats');
 //     const contact = {

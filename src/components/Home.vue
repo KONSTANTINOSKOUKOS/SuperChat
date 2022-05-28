@@ -1,22 +1,34 @@
 <template>
     <div class="cont">
-        <div class="contact" v-for="contact in contacts">
-            <img :src="getuser(contact.users).photoURL">
+        <div v-if="!loading" class="contact" v-for="contact in contacts">
+            <!-- {{other(contacts[0].users)}} -->
+            <h1>{{ contact.id == 'superchat' ? 'SuperChat' : getuser(other(contact.users)) }}</h1>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
 import { getcontacts, getuser } from "../firebase";
-import { state } from "../store";
+import { IContact, state } from "../store";
 
-const contacts = getcontacts(state.user.uid);
+scroll(0, 0);
+const loading = ref(true);//wait to load
+
+const contacts: IContact[] = [];
+getcontacts(state.user.uid, contacts, loading);
 console.log(contacts);
+
+const other = (users: string[]) => {
+    return users.find((id) => {
+        return id != state.user.uid;
+    });
+};
 </script>
 
 <style scoped>
 .cont {
-    margin-top: 3rem;
-    background-color: blue;
+    margin-top: 4rem;
+    /* background-color: blue; */
 }
 </style>

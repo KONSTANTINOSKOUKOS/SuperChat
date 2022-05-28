@@ -1,5 +1,7 @@
 <template>
-    <button v-if="!bottom" @click="scroll('smooth')" class="bottom">&#8681;</button>
+    <button v-if="!bottom" @click="scroll('smooth')" class="bottom">
+        &#8681;
+    </button>
     <div class="cont">
         <form @submit.prevent="sendd();">
             <!-- <textarea v-model="msg" placeholder="Πείτε κάτι" cols="30" rows="10"></textarea> -->

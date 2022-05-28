@@ -9,14 +9,13 @@
             </svg>
         </router-link>
         <router-link class="link" to="/chat">
-
-            <svg v-if="$route.path == '/chat'" aria-label="Direct" class="_8-yf5 " color="#262626" fill="#262626"
+            <svg v-if="$route.path == '/chat'" color="#262626" fill="#262626"
                 height="24" role="img" viewBox="0 0 24 24" width="24">
                 <path
                     d="M22.91 2.388a.69.69 0 00-.597-.347l-20.625.002a.687.687 0 00-.482 1.178L7.26 9.16a.686.686 0 00.778.128l7.612-3.657a.723.723 0 01.937.248.688.688 0 01-.225.932l-7.144 4.52a.69.69 0 00-.3.743l2.102 8.692a.687.687 0 00.566.518.655.655 0 00.103.008.686.686 0 00.59-.337L22.903 3.08a.688.688 0 00.007-.692"
                     fill-rule="evenodd"></path>
             </svg>
-            <svg v-else aria-label="Direct" class="_8-yf5 " color="#262626" fill="none" height="24" role="img"
+            <svg v-else color="#262626" fill="none" height="24" role="img"
                 viewBox="0 0 24 24" width="24">
                 <line fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="2" x1="22" x2="9.218"
                     y1="3" y2="10.083"></line>
@@ -43,10 +42,11 @@ import { state } from "../store";
     display: flex;
     justify-content: space-around;
     align-items: center;
-    max-height: 6vh;
+    max-height: 6.3vh;
 }
 
 .link {
+    /* padding: 0 10rem; */
     background-color: #828f98;
     color: black;
     border: 0;
@@ -66,13 +66,13 @@ img {
     width: 1.8rem;
     height: 1.8rem;
     /* margin: .1rem 1rem; */
-    margin-top: .3rem;
+    margin-top: .2rem;
     border-radius: 50%;
 }
 
 .focused {
     border: 2px solid black;
-    width: 2rem;
-    height: 2rem;
+    width: 1.8rem;
+    height: 1.8rem;
 }
-</style>https://cdn-icons-png.flaticon.com/512/59/59521.png
+</style>

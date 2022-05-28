@@ -29,12 +29,13 @@ export interface IMsg {
 };
 
 export interface IUser {
-    displayName: string,
+    name: string,
     photoUrl: string,
     uid: string
 };
 
 export interface IContact {
+    id: string,
     users: string[],
     msgs: IMsg[]
 }
