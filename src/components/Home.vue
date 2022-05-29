@@ -1,39 +1,38 @@
-<template>
+<template >
     <div class="cont">
-        <div v-if="!loading" class="contact" v-for="contact in contacts">
-            <!-- {{other(contacts[0].users)}} -->
-            <h1>{{ contact.id == 'superchat' ? 'SuperChat' : getuser(other(contact.users)) }}</h1>
-            <img :src="contact.id == 'superchat' ? state.user.photoURL : ''" />
+        <div @click="handlecontact(contact.id)" v-if="pressed" class="contact" v-for="contact in contacts">
+            <div>
+                <h1>{{ contact.id == 'superchat' ? 'SuperChat' : contact.othername }}</h1>
+                <img :src="contact.id == 'superchat' ? state.user.photoURL : contact.otherphoto" />
+            </div>
         </div>
+        <button style="position: fixed; margin:10rem" @click="pressed = !pressed">noice</button>
     </div>
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import { getcontacts, getuser } from "../firebase";
-import { IContact, state } from "../store";
+import { getcontacts } from "../firebase";
+import { router } from "../router";
+import { state } from "../store";
 
 const loading = ref(true);//wait to load
+const pressed = ref(false);
 
-const contacts: IContact[] = [];
+const contacts = [];
 
-const other = (users: string[]) => {
-    return users.find(id => {
-        return id != state.user.uid;
-    });
-};
-onMounted(() => {
+onMounted(async () => {
+    loading.value = true;
     scroll(0, 0);
     getcontacts(state.user.uid, contacts, loading);
-
-    console.log(getuser('Q0ItRiYUbGTvDSOvPqAa0D7XQux2').then(user => { return user }));
     console.log(contacts);
 
-    const users = [];
-    contacts.forEach(() => {
-        console.log('ok');
-    });
 });
+
+const handlecontact = (id: string) => {
+    router.push({ name: 'Chat', params: { id: id } });
+    state.currentchatid = id;
+}
 </script>
 
 <style scoped>

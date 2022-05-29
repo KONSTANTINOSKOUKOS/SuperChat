@@ -8,15 +8,19 @@
 </template>
 
 <script lang="ts" setup>
+import { getmsgss } from "../firebase";
 import { inject, provide, ref } from "vue";
 import { istate } from "../store";
-// import Nav from "./Nav.vue";
+
 import Message from "./Message.vue";
 import Form from "./Form.vue";
+import { router } from "../router";
 
 const state: istate = inject("state");
 const dum = ref<null | Element>(null);
 provide('dum', dum);
+
+getmsgss(state.currentchatid);
 </script>
 
 <style scoped>

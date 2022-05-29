@@ -2,7 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
-import { IContact, IUser, state } from './store';
+import { state } from './store';
 import { IMsg } from './store';
 import { onUnmounted, Ref } from 'vue';
 
@@ -12,6 +12,7 @@ import {
     signInWithPopup,
 } from "firebase/auth";
 import { router } from "./router";
+import { compileStyle } from "@vue/compiler-sfc";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBQIzMt7WX15ElNiUUXDKjSAmM5g-qQl-k",
@@ -120,43 +121,53 @@ export function logout() {
     router.push({ name: 'Auth' });
 };
 
-export async function getuser(uid: string): Promise<IUser> {
-    // let user: IUser = {};
-    // getDoc(doc(db, 'users', uid)).then(doc => {
-    //     user = doc.data();
-    // });
-    // return user;
-    return (await getDoc(doc(db, 'users', uid))).data() as IUser;
-}
-
-export function getcontacts(uid: string, contacts: IContact[], loading: Ref<boolean>) {
+export function getcontacts(uid: string, contacts: any[], loading: Ref<boolean>) {
 
     loading.value = true;
+    const other = (users: string[]) => {
+        return users.find(id => {
+            return id != state.user.uid;
+        });
+    };
+
     getDocs(collection(db, 'contacts')).then(docss => {
-        docss.docs.forEach(doc => {
-            if (doc.data().users.indexOf(uid) != -1) {
-                contacts.push(doc.data());
+        docss.docs.forEach(docc => {
+            loading.value = true;
+
+            if (docc.data().users.indexOf(uid) != -1) {//is own
+
+                let othername: string, otherphoto: string;
+                const id = docc.data().id;
+                //                      other user, not you
+                getDoc(doc(db, 'users', other(docc.data().users))).then(doc => {//get user
+                    // console.log(doc.data());
+                    const otheruser = doc.data();
+                    // console.log(otheruser);
+
+                    othername = otheruser.name;
+                    otherphoto = otheruser.photoURL;
+
+                    contacts.push({
+                        id,
+                        othername,
+                        otherphoto
+                    });
+                });
+                loading.value = false;
             }
-        })
-        loading.value = false;
+        });
     });
+    console.log(contacts);
 }
 
-// export async function addcontact() {
-//     //const chats = collection(db, 'chats');
-//     const contact = {
-//         users:[state.user,]
-//     }
-//     await setDoc(doc(db,'contacts'),contact);
-// }
+export function getmsgss(chatid: string) {
+    const unsub = onSnapshot(doc(db, 'contacts', chatid), doc => {
+        state.msgs = doc.data().msgs;
+    });
+}
 
 export async function spch() {
     const allusers = (await getDocs(collection(db, 'users'))).docs;
     console.log(allusers);
     return allusers;
 }
-    // const chat: IContact = {
-    //     users: 1,
-    //     msgs:[]
-    // };
-    // setDoc(doc(db,'contacts','superchat'),chat);

@@ -30,7 +30,7 @@ export interface IMsg {
 
 export interface IUser {
     name: string,
-    photoUrl: string,
+    photoURL: string,
     uid: string
 };
 
