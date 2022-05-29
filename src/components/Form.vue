@@ -24,7 +24,6 @@ const scroll = (bhvr: ScrollBehavior) => {
 }
 
 onMounted(async () => {
-    scroll('auto');
     getmsgs();
     const obs = new IntersectionObserver(e => {
         e.forEach(entry => {
@@ -39,6 +38,7 @@ onMounted(async () => {
         threshold: 0,
     });
     obs.observe(dum.value);
+    scroll('auto');
 });
 
 const sendd = async () => {

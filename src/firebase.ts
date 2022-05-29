@@ -120,14 +120,13 @@ export function logout() {
     router.push({ name: 'Auth' });
 };
 
-export function getuser(uid: string): IUser {
-    let user = {};
-    getDoc(doc(db, 'users', uid)).then(doc => {
-        user = doc.data();
-        console.log(user);
-        
-    });
-    return user;
+export async function getuser(uid: string): Promise<IUser> {
+    // let user: IUser = {};
+    // getDoc(doc(db, 'users', uid)).then(doc => {
+    //     user = doc.data();
+    // });
+    // return user;
+    return (await getDoc(doc(db, 'users', uid))).data() as IUser;
 }
 
 export function getcontacts(uid: string, contacts: IContact[], loading: Ref<boolean>) {
