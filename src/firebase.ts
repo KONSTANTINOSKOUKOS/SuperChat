@@ -121,9 +121,8 @@ export function logout() {
     router.push({ name: 'Auth' });
 };
 
-export function getcontacts(uid: string, contacts: any[], loading: Ref<boolean>) {
+export function getcontacts(uid: string, contacts: Ref<any[]>) {
 
-    loading.value = true;
     const other = (users: string[]) => {
         return users.find(id => {
             return id != state.user.uid;
@@ -131,9 +130,8 @@ export function getcontacts(uid: string, contacts: any[], loading: Ref<boolean>)
     };
 
     getDocs(collection(db, 'contacts')).then(docss => {
+        // docc.data().messages.length - 1
         docss.docs.forEach(docc => {
-            loading.value = true;
-
             if (docc.data().users.indexOf(uid) != -1) {//is own
 
                 let othername: string, otherphoto: string;
@@ -143,21 +141,20 @@ export function getcontacts(uid: string, contacts: any[], loading: Ref<boolean>)
                     // console.log(doc.data());
                     const otheruser = doc.data();
                     // console.log(otheruser);
-
+                    docc.data().messages
                     othername = otheruser.name;
                     otherphoto = otheruser.photoURL;
 
-                    contacts.push({
+                    contacts.value.push({
                         id,
                         othername,
-                        otherphoto
+                        otherphoto,
                     });
                 });
-                loading.value = false;
             }
         });
     });
-    console.log(contacts);
+    console.log(contacts.value);
 }
 
 export function getmsgss(chatid: string) {
@@ -170,4 +167,18 @@ export async function spch() {
     const allusers = (await getDocs(collection(db, 'users'))).docs;
     console.log(allusers);
     return allusers;
+}
+export function testt() {
+    const arr = [];
+    getDocs(collection(db, 'messages')).then(docsnaps => {
+        docsnaps.docs.forEach(docc => {
+            arr.push(docc.data());
+            // getDoc(doc(db, 'contacts', 'superchat')).then(docc => {
+            //     docc.data()
+            // })
+        });
+    });
+    updateDoc(doc(db, 'contacts', 'superchat'), {
+        messages: arrayUnion(arr)
+    });
 }
