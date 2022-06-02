@@ -10,7 +10,7 @@
 <script setup lang="ts">
 import { state } from "./store";
 import { onMounted, provide } from "vue";
-import { db, auth, persistuser } from "./firebase";
+import { db, auth, persiststate } from "./firebase";
 
 import Nav from "./components/Nav.vue";
 import PagesNav from "./components/PagesNav.vue";
@@ -21,7 +21,7 @@ provide("state", state);
 provide("auth", auth);
 
 onMounted(() => {
-  persistuser();
+  persiststate();
 })
 </script>
 

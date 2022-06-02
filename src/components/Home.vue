@@ -1,6 +1,6 @@
 <template >
     <div class="cont">
-        <div @click="handlecontact(contact.id)"  class="contact" v-for="contact in contacts">
+        <div @click="handlecontact(contact.id)" class="contact" v-for="contact in contacts">
             <div>
                 <h1>{{ contact.id == 'superchat' ? 'SuperChat' : contact.othername }}</h1>
                 <img :src="contact.id == 'superchat' ? state.user.photoURL : contact.otherphoto" />
@@ -26,7 +26,9 @@ onMounted(async () => {
 });
 
 const handlecontact = (id: string) => {
-    router.push({ name: 'Chat', params: { id: id } });
+    // { name: 'Chat', params: { id: id } }
+    localStorage.setItem('chatid', state.currentchatid);
+    router.push(`/chat/${id}`);
     state.currentchatid = id;
 }
 </script>

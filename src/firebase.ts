@@ -12,7 +12,6 @@ import {
     signInWithPopup,
 } from "firebase/auth";
 import { router } from "./router";
-import { compileStyle } from "@vue/compiler-sfc";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBQIzMt7WX15ElNiUUXDKjSAmM5g-qQl-k",
@@ -80,8 +79,10 @@ export function getlikes(docc: any, ownliked: Ref<boolean>, arrlike: Ref<string[
     });
 };
 
-export function persistuser() {
+export function persiststate() {
     state.user = JSON.parse(localStorage.getItem('user'));
+    // state.msgs = JSON.parse(localStorage.getItem('msgs'));
+    state.currentchatid = JSON.parse(localStorage.getItem('chatid'));
 };
 
 export async function loginwgoogle() {
@@ -160,6 +161,7 @@ export function getcontacts(uid: string, contacts: Ref<any[]>) {
 export function getmsgss(chatid: string) {
     const unsub = onSnapshot(doc(db, 'contacts', chatid), doc => {
         state.msgs = doc.data().msgs;
+        localStorage.setItem('msgs', JSON.stringify(state.msgs));
     });
 }
 
