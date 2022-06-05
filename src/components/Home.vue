@@ -11,10 +11,9 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import { getcontacts, testt } from "../firebase";
+import { getcontacts } from "../firebase";
 import { router } from "../router";
 import { state } from "../store";
-
 
 const contacts = ref([]);
 
@@ -27,9 +26,11 @@ onMounted(async () => {
 
 const handlecontact = (id: string) => {
     // { name: 'Chat', params: { id: id } }
-    localStorage.setItem('chatid', state.currentchatid);
-    router.push(`/chat/${id}`);
     state.currentchatid = id;
+    localStorage.setItem('chatid', state.currentchatid);
+    // router.push(`/chat/${id}`);
+    router.push({ name: 'Chat' });
+    // router.push(`/user/${id}`);
 }
 </script>
 

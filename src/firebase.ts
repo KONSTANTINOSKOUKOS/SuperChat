@@ -82,7 +82,7 @@ export function getlikes(docc: any, ownliked: Ref<boolean>, arrlike: Ref<string[
 export function persiststate() {
     state.user = JSON.parse(localStorage.getItem('user'));
     // state.msgs = JSON.parse(localStorage.getItem('msgs'));
-    state.currentchatid = JSON.parse(localStorage.getItem('chatid'));
+    state.currentchatid = localStorage.getItem('chatid');
 };
 
 export async function loginwgoogle() {

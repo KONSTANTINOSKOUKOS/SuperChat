@@ -14,15 +14,15 @@ const routes = [
         component: () => import('./components/Home.vue')
     },
     {
-        path: '/chat:id',
+        path: '/chat',
         name: 'Chat',
         component: () => import('./components/Chat.vue')
     },
-    // {
-    //     path: '/user',
-    //     name: 'User',
-    //     component: ()=> import('./components/User.vue')
-    // },
+    {
+        path: '/user',
+        name: 'User',
+        component: ()=> import('./components/User.vue')
+    },
 ];
 
 export const router = createRouter({

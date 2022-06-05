@@ -1,6 +1,6 @@
 <template>
     <div v-if="state.user" class="cont">
-        <router-link class="link" :to="{name: 'Home', force: true}">
+        <router-link class="link" :to="{ name: 'Home', force: true }">
             <svg viewBox="0 0 24 24" width="24">
                 <path
                     d="M9.005 16.545a2.997 2.997 0 012.997-2.997h0A2.997 2.997 0 0115 16.545V22h7V11.543L12 2 2 11.543V22h7.005z"
@@ -8,15 +8,15 @@
                     stroke-width="2"></path>
             </svg>
         </router-link>
+        <!-- {name: 'Chat'} -->
         <router-link class="link" to="/chat">
-            <svg v-if="$route.path == '/chat'" color="#262626" fill="#262626"
-                height="24" role="img" viewBox="0 0 24 24" width="24">
+            <svg v-if="$route.name == 'Chat'" color="#000" fill="#000" height="24" role="img" viewBox="0 0 24 24"
+                width="24">
                 <path
                     d="M22.91 2.388a.69.69 0 00-.597-.347l-20.625.002a.687.687 0 00-.482 1.178L7.26 9.16a.686.686 0 00.778.128l7.612-3.657a.723.723 0 01.937.248.688.688 0 01-.225.932l-7.144 4.52a.69.69 0 00-.3.743l2.102 8.692a.687.687 0 00.566.518.655.655 0 00.103.008.686.686 0 00.59-.337L22.903 3.08a.688.688 0 00.007-.692"
                     fill-rule="evenodd"></path>
             </svg>
-            <svg v-else color="#262626" fill="none" height="24" role="img"
-                viewBox="0 0 24 24" width="24">
+            <svg v-else color="#000" fill="none" height="24" role="img" viewBox="0 0 24 24" width="24">
                 <line fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="2" x1="22" x2="9.218"
                     y1="3" y2="10.083"></line>
                 <polygon :fill="$route.path == '/chat' ? '#black' : 'none'"

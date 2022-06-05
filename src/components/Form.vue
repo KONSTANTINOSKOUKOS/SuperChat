@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 import { Ref, ref, onMounted, inject } from "vue";
-import { send, getmsgs } from '../firebase';
+import { send } from '../firebase';
 
 const msg = ref('');
 const bottom = ref(false);
@@ -24,7 +24,6 @@ const scroll = (bhvr: ScrollBehavior) => {
 }
 
 onMounted(async () => {
-    getmsgs();
     const obs = new IntersectionObserver(e => {
         e.forEach(entry => {
             if (entry.isIntersecting) {
