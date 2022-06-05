@@ -2,7 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
-import { state } from './store';
+import { IContact, state } from './store';
 import { IMsg } from './store';
 import { onUnmounted, Ref } from 'vue';
 
@@ -34,6 +34,7 @@ export function getmsgs() {
     const unsub = onSnapshot(q, docs => {
         state.msgs = [];
         docs.forEach(doc => {
+            /**@ts-ignore */
             state.msgs.push(doc.data());
         });
     });
@@ -122,13 +123,16 @@ export function logout() {
     router.push({ name: 'Auth' });
 };
 
-export function getcontacts(uid: string, contacts: Ref<any[]>) {
+export function getcontacts(uid: string, contacts: IContact[]) {
 
-    const other = (users: string[]) => {
-        return users.find(id => {
-            return id != state.user.uid;
-        });
-    };
+    if (contacts.length != 0)
+        return;
+
+        const other = (users: string[]) => {
+            return users.find(id => {
+                return id != state.user.uid;
+            });
+        };
 
     getDocs(collection(db, 'contacts')).then(docss => {
         // docc.data().messages.length - 1
@@ -146,7 +150,7 @@ export function getcontacts(uid: string, contacts: Ref<any[]>) {
                     othername = otheruser.name;
                     otherphoto = otheruser.photoURL;
 
-                    contacts.value.push({
+                    contacts.push({
                         id,
                         othername,
                         otherphoto,
@@ -155,21 +159,16 @@ export function getcontacts(uid: string, contacts: Ref<any[]>) {
             }
         });
     });
-    console.log(contacts.value);
+    console.log(contacts);
 }
 
 export function getmsgss(chatid: string) {
     const unsub = onSnapshot(doc(db, 'contacts', chatid), doc => {
-        state.msgs = doc.data().msgs;
+        state.msgs = doc.data().messages;
         localStorage.setItem('msgs', JSON.stringify(state.msgs));
     });
 }
 
-export async function spch() {
-    const allusers = (await getDocs(collection(db, 'users'))).docs;
-    console.log(allusers);
-    return allusers;
-}
 export function testt() {
     const arr = [];
     getDocs(collection(db, 'messages')).then(docsnaps => {

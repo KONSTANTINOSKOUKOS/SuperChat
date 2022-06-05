@@ -22,7 +22,7 @@ provide('dum', dum);
 
 getmsgs();
 onMounted(() => { });
-getmsgss(state.currentchatid);
+// getmsgss(state.currentchatid);
 </script>
 
 <style scoped>

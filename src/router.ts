@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { state } from './store';
-import { persiststate } from "./firebase";
 
 const routes = [
     {
@@ -31,7 +30,7 @@ export const router = createRouter({
 });
 
 router.afterEach(async (to, from) => {
-    persiststate();
+    // persiststate();
     if (to.name != 'Auth' && !state.user) {
         return router.push({ name: 'Auth' });
     }

@@ -1,20 +1,22 @@
 import { reactive } from 'vue';
 
 export const state = reactive({
-    msgs: [],
+    contacts: [] as IContact[],
+    msgs: [] as IMsg[],
     user: null,
-    currentchatid: ''
+    currentchatid: 'superchat',
 });
 
 export interface istate {
-    msgtype?: { id: number, liked: string[], sender: string, txt: string, date: number, img: string, name: string },
-    msgs: { id: number, liked: string[], sender: string, txt: string, date: number, img: string, name: string }[],
+    msgtype?: IMsg,
+    msgs: IMsg[],
     user: {
         displayName: string,
         photoUrl: string,
         uid: string
     },
-    currentchatid: string
+    currentchatid: string,
+    contacts: IContact[]
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -36,6 +38,6 @@ export interface IUser {
 
 export interface IContact {
     id: string,
-    users: string[],
-    msgs: IMsg[]
+    othername: string,
+    otherphoto: string
 }
